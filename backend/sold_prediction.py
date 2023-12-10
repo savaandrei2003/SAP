@@ -4,7 +4,6 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
-from datetime import datetime, timedelta
 
 # Citirea datelor din fișierul Excel
 file_path = "sales_and_eodStocks.xlsx"
@@ -48,13 +47,24 @@ def get_prediction(product_id_to_predict, input_date_str):
     # Estimarea timpului până la terminarea stocului
     days_until_zero_stock = int(model.intercept_ / model.coef_[0])
 
+    bias = np.mean(predicted_stock - y)
+    print(bias)
+
+    # Calculate MAPE
+    # null_indices = y.index[y.isnull()]
+    # y.dropna(inplace=True)
+    # predicted_stock_non_null = np.delete(predicted_stock, null_indices)
+    # mape = np.mean(np.abs((y - predicted_stock_non_null) / y)) * 100
+    # print(mape)
+
     # Afișarea rezultatului
-    print(f'Predicția pentru data {input_date_str}: {int(predicted_stock[0])} unități de stoc.\n'
+    print(f'Predicția cererii pentru data {input_date_str}: {int(predicted_stock[0])} unități de stoc.\n'
           f'Estimare: Stocul se va termina în aproximativ {days_until_zero_stock} zile.')
 
     return json.dumps(
           {
                 "predicted_stock": int(predicted_stock[0]),
-                "days_until_zero_stock": days_until_zero_stock
+                "days_until_zero_stock": days_until_zero_stock,
+                "bias": int(bias)
           }
     )

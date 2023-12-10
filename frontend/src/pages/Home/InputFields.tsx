@@ -5,11 +5,15 @@
     import "./home.css";
     import { postProduct } from "../../common/services/api/postProduct";
 
-    function ProductID() {
+    interface ProductIDProps {
+        callback: (prev: any) => void;
+    }
+
+    function ProductID({ callback}: ProductIDProps) {
     const [x, setX] = useState<string>("");
     const [hasBeenSearched, setHasBeenSearched] = useState<boolean>(false);
     const [mapsLink, setMapsImage] = useState<string>("");
-    
+    const [img, setImg] = useState<string>("");
 
     const handleClick = async () => {
         try {
@@ -17,15 +21,23 @@
         console.log(values);
         const response = await postProduct(values);
 
-      setMapsImage(response.data["maps_link"]);
+      //setMapsImage(response.data["photo"]);
+      console.log(response.data["photo"]);
+      setImg(response.data["photo"]);
+      callback(x);
       setHasBeenSearched(true);
-      setX("");
+      
 
     //   console.log(response.data["duration"]);
       
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const handleID = (s:string) => {
+      setX(s);
+      callback(s);
   };
 
   return (
@@ -43,7 +55,7 @@
               className="p-2 border  inputbox rounded-lg  flex flex-col justify-center items-center"
               placeholder="Enter product ID"
               value={x}
-              onChange={(e) => setX(e.target.value)}
+              onChange={(e) => handleID(e.target.value)}
             />
           </div>
           

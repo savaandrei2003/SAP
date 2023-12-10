@@ -1,4 +1,4 @@
 export interface IBothRequest {
-    time: Date | null;
-    prod_id: string;
+    date: Date | null;
+    product_id: string;
 }

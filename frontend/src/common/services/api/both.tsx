@@ -6,7 +6,7 @@ const instance = axios.create({
   baseURL: API_URL,
 });
 
-export function getHome() {
-  return instance.get('/home');
-}
 
+export function postBoth(data:IBothRequest) {
+  return instance.post('/product-prediction', data);
+}

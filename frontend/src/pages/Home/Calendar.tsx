@@ -5,9 +5,12 @@ import { sendCalendar } from '../../common/services/api/calendar';
 
 interface CalendarComponentProps {
   initialDate?: Date; // Adaugăm prop-ul pentru data inițială
+  date1?: Date | null;
+  callback: (prev: any) => void;
+  
 }
 
-const CalendarComponent: React.FC<CalendarComponentProps> = ({ initialDate }) => {
+const CalendarComponent: React.FC<CalendarComponentProps> = ({ initialDate, date1, callback }) => {
     
     const [selectedDate, setSelectedDate] = useState<Date | null>(
       initialDate || new Date()
@@ -26,7 +29,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ initialDate }) =>
 
       setInfo(response.data["info"]);
       setHasBeenSearched(true);
-      setSelectedDate(null);
+    //   setSelectedDate(null);
 
     //   console.log(response.data["duration"]);
       
@@ -34,12 +37,11 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ initialDate }) =>
       console.error(e);
     }
   };
-
-    
   
   
     const handleDateChange = (date: Date | null) => {
       setSelectedDate(date);
+        callback(date);
     };
   
     const openCalendar = () => {
@@ -64,7 +66,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ initialDate }) =>
            
                 <DatePicker
                 selected={selectedDate}
-                onChange={handleClick}
+                onChange={handleDateChange}
                 dateFormat="dd/MM/yyyy"
                 className="rounded bg-white text-black p-2 flex flex-col items-center justify-center w-full"
                 open={isCalendarOpen}

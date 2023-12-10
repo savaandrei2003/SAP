@@ -11,7 +11,7 @@ data = pd.read_excel(file_path)
 
 
 def retrieve_anomalies(product_id_to_analyze):
-    selected_data = data[data['Product_ID'] == product_id_to_analyze]
+    selected_data = data[data['Product_ID'] == int(product_id_to_analyze)]
 
     # Calculăm Z-Score pentru coloana 'EndOfDayStock'
     selected_data['Z_Score'] = zscore(selected_data['EndOfDayStock'])
@@ -42,7 +42,7 @@ def retrieve_anomalies(product_id_to_analyze):
     plt.show()
 
     with open('stats.png', 'rb') as image_file:
-        image_binary_data = image_file.read()
+       image_binary_data = image_file.read()
 
     photo = base64.b64encode(image_binary_data).decode("utf-8")
     return {"photo": photo}
