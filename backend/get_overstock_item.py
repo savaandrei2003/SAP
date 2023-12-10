@@ -11,7 +11,7 @@ product_id = 1
 
 for index, row in data.iterrows():
     try:
-        date = datetime.strptime(str(row["Date"]), "%Y-%m-%d")
+        date = datetime.strptime(str(row["Date"]), "%Y-%m-%d %H:%M:%S")
         if date > last_day:
             eod_stock = row["EndOfDayStock"]
             product_id = row["Product_ID"]
@@ -28,6 +28,7 @@ description = ""
 for index, row in transactions_document.iterrows():
     if row["Product_ID"] == product_id:
         description = row["Description"]
+        break
 
 print(description)
 print(eod_stock)

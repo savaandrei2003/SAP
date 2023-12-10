@@ -5,6 +5,7 @@ import json
 import anomalyser
 import sold_prediction
 import send_targeted_message
+import send_general_message
 from pymongo import MongoClient
 
 
@@ -40,6 +41,15 @@ def get_product_prediction():
 @cross_origin()
 def send_targeted_message_to_costumer():
     send_targeted_message.send_targeted_message(users_collection=users_collection)
+    return {"status": "success"}
+
+
+@app.route("/general-message", methods=["POST"])
+@cross_origin()
+def send_general_message_to_customer():
+    product_name = request.get_json()["product"]
+    percentage = request.get_json()["percentage"]
+    send_general_message.send_message("customer", product_name, percentage, users_collection)
     return {"status": "success"}
 
 
